@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-y+@d)l12=5j%z5-%0^)^!-z6%f7d14=6ojs!io7@8c^ysq*)z@
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+PORT = int(os.getenv('PORT', 8000))
 
 # Application definition
 
@@ -162,7 +162,7 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = True 
 CSRF_USE_SESSIONS = True
 CSRF_COOKIE_HTTPONLY = True
-CSRF_TRUSTED_ORIGINS = ['https://elitcare.onrender.com',"http://localhost:8080 2", "http://*.127.0.0.1", "http://127.0.0.1:8080"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8080", "http://*.127.0.0.1", "http://127.0.0.1:8080"]
 
 AUTH_USER_MODEL = 'account.CustomUser'
 
