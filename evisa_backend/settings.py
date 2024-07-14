@@ -26,9 +26,12 @@ SECRET_KEY = 'django-insecure-y+@d)l12=5j%z5-%0^)^!-z6%f7d14=6ojs!io7@8c^ysq*)z@
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 ALLOWED_HOSTS = ["*"]
-PORT = int(os.getenv('PORT', 8000))
+CSRF_TRUSTED_ORIGINS = ['https://elitcare.onrender.com',"http://localhost:8080 2", "http://*.127.0.0.1", "http://127.0.0.1:8080"]
+
+
 
 # Application definition
 
@@ -39,17 +42,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework_simplejwt',
-    'rest_framework.authtoken',
+   
     'corsheaders',
     "account",
+    'rest_framework',
+    # 'rest_framework_simplejwt',
+    'rest_framework.authtoken',
 ]
 
 
 
 MIDDLEWARE = [
-    # "webapi.middlewareForCookies.CustomHeaderMiddleware",
+    
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -59,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'evisa_backend.urls'
 
@@ -102,13 +107,10 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
     ],
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
+    
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -152,21 +154,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
-
-
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_COOKIE_SECURE = True 
-CSRF_USE_SESSIONS = True
-CSRF_COOKIE_HTTPONLY = True
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8080", "http://*.127.0.0.1", "http://127.0.0.1:8080"]
+
 
 AUTH_USER_MODEL = 'account.CustomUser'
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

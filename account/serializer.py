@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser
 
-class UserSerializer(serializers.Serializer):
+class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()
@@ -9,6 +9,10 @@ class UserSerializer(serializers.Serializer):
     phone_no = serializers.CharField()
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name','last_name','email','phone_no','password','password2']
 
     def save(self):
         username = self.validated_data['username']
@@ -33,6 +37,5 @@ class UserSerializer(serializers.Serializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    password = serializers.CharField(required=True)
-
+    email = serializers.EmailField()
+    password = serializers.CharField()

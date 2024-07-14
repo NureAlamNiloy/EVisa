@@ -10,6 +10,9 @@ from django.shortcuts import redirect
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -20,9 +23,10 @@ from django.template.loader import render_to_string
 
 # Create your views here.
 
+
+
 class RegisterView(views.APIView):
     serializer_class = UserSerializer
-    
     def post(self,request):
         serializer = self.serializer_class(data= request.data)
         if serializer.is_valid():
@@ -55,41 +59,35 @@ def activate(request, uid64, token):
          
  
 
-
- 
 class LoginViewset(views.APIView):
+    
+    serializer_class = LoginSerializer
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    def post(self, request):
-        serializer = LoginSerializer(data= self.request.data)
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
+        user = authenticate(request, email=email, password=password)
 
-        if serializer.is_valid():
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
-            user = authenticate(email=email, password=password)
+        if user:
+            token, created = Token.objects.get_or_create(user=user)
+            login(request, user)
+            return Response({'token': token.key, 'user_id': user.id}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-            if user:
-                token, _ = Token.objects.get_or_create(user=user)
-                login(request, user)
-                return Response({'token': token.key, 'user_id': user.id})
-            else:
-                return Response({'error':"Invalid User"})
-        
-        return Response(serializer.errors)
-
-
-# class LogoutViewset(views.APIView):
-#     def get(self, request):
-#         request.user.auth_token.delete()
-#         logout(request)
-#         return redirect('login')
 
 class LogoutViewset(views.APIView):
-    def get(self, request):
-        print(f"User: {request.user}, Authenticated: {request.user.is_authenticated}")
-        if request.user.is_authenticated:
-            request.user.auth_token.delete()
-            logout(request)
-            return redirect('login') 
-        else:
-            return Response({'message': 'User is not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+    authentication_classes = [SessionAuthentication]
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            tokens_deleted, _ = Token.objects.filter(user=request.user).delete()
+            if tokens_deleted > 0:
+                logout(request)
+                return redirect('login')
+            else:
+                return Response({"error": "Token not found or already deleted"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
