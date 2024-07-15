@@ -60,7 +60,7 @@ def activate(request, uid64, token):
  
 
 class LoginViewset(views.APIView):
-    
+    authentication_classes = [SessionAuthentication]
     serializer_class = LoginSerializer
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -90,4 +90,4 @@ class LogoutViewset(views.APIView):
             else:
                 return Response({"error": "Token not found or already deleted"}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+            return redirect('register')
