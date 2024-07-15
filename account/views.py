@@ -33,7 +33,7 @@ class RegisterView(views.APIView):
             user = serializer.save()
             token = default_token_generator.make_token(user)
             uniqueId = urlsafe_base64_encode(force_bytes(user.pk))
-            email_link = f"http://127.0.0.1:8000/account/active/{uniqueId}/{token}"
+            email_link = f"https://evisa-z93n.onrender.com/account/active/{uniqueId}/{token}"
             email_subject = "Confirm Your Email"
             email_body = render_to_string("confirm_email.html", {"email_link" : email_link})
 
