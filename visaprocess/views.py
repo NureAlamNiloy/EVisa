@@ -9,3 +9,6 @@ class VisaApplicationViewset(viewsets.ModelViewSet):
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user = self.request.user)

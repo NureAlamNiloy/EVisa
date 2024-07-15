@@ -6,5 +6,6 @@ class VisaApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = VisaApplication
         fields = ["visa_type", "passport_no"]
+        read_only_fields = ['user']
 
 
