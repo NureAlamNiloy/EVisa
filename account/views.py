@@ -40,8 +40,8 @@ class RegisterView(views.APIView):
             email = EmailMultiAlternatives(email_subject, " ", to=[user.email])
             email.attach_alternative(email_body, "text/html")
             email.send()
-            return Response("Check your mail for verify")
-        return Response(serializer.errors)
+            return Response({"message": "Check your email to verify your account."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def activate(request, uid64, token):
     try:
@@ -53,9 +53,9 @@ def activate(request, uid64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return redirect('login')
+        return Response({"message": "Account activated successfully. Please log in."}, status=status.HTTP_200_OK)
     else:
-        return redirect('register')
+        return Response({"error": "Activation link is invalid or has expired."}, status=status.HTTP_400_BAD_REQUEST)
          
  
 
@@ -86,8 +86,8 @@ class LogoutViewset(views.APIView):
             tokens_deleted, _ = Token.objects.filter(user=request.user).delete()
             if tokens_deleted > 0:
                 logout(request)
-                return redirect('login')
+                return Response({"message": "Successfully logged out."}, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "Token not found or already deleted"}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return redirect('register')
+            return Response({"error": "You are not logged in."}, status=status.HTTP_400_BAD_REQUEST)
