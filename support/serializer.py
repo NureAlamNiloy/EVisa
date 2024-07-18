@@ -3,6 +3,8 @@ from .models import UserSupport
 
 
 class SupportSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = UserSupport
         fields = ["subject", "massage"]
+        read_only_fields = ['user']
