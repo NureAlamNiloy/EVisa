@@ -2,6 +2,7 @@ from .serializer import UserSerializer, LoginSerializer
 from .models import CustomUser
 from rest_framework import viewsets, views, permissions, exceptions
 from rest_framework.response import Response
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -33,7 +34,7 @@ class RegisterView(views.APIView):
             user = serializer.save()
             token = default_token_generator.make_token(user)
             uniqueId = urlsafe_base64_encode(force_bytes(user.pk))
-            email_link = f"https://evisa-z93n.onrender.com/account/active/{uniqueId}/{token}"
+            email_link = f"http://127.0.0.1:8000/account/active/{uniqueId}/{token}"
             email_subject = "Confirm Your Email"
             email_body = render_to_string("confirm_email.html", {"email_link" : email_link})
 
@@ -53,9 +54,9 @@ def activate(request, uid64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return Response({"message": "Account activated successfully. Please log in."}, status=status.HTTP_200_OK)
+        return HttpResponse("Account activated successfully. Please log in.", status=200)
     else:
-        return Response({"error": "Activation link is invalid or has expired."}, status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse("Activation link is invalid or has expired.", status=400)
          
  
 
