@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "account",
     "support",
     "visaprocess",
+    "report",
+    "interview",
     'rest_framework',
     'rest_framework.authtoken',
 ]

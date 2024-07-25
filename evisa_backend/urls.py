@@ -23,4 +23,6 @@ urlpatterns = [
     path('support/', include('support.urls')),
     path('visa/', include('visaprocess.urls')),
     path('notification/', include('notification.urls')),
+    path('report/', include('report.urls')),
+    path('interview/', include('interview.urls')),
 ]

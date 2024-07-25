@@ -51,12 +51,25 @@ class VisaApplication(models.Model):
     health_ensurence = models.FileField(upload_to='health/')
     is_approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
-    
+    is_modified = models.BooleanField(default=False)
     submission_date = models.DateField(auto_now_add=True)
     # updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username}, applicant: {self.full_name}"
+
+VISASTATUS = [
+    ('Panding', 'Panding'),
+    ('AdminApprove', 'AdminApprove'),
+    ('PoliceVerification', 'PoliceVerification'),
+    ('Approved', 'Approved'),
+]
+class VisaStatus(models.Model):
+    visa = models.ForeignKey(VisaApplication, on_delete=models.CASCADE)
+    traking_id = models.CharField(max_length=10, null=True, blank=True)
+    visa_status = models.CharField(max_length=100, default='Panding', choices=VISASTATUS)
+    massage = models.TextField()
+    update_at = models.DateTimeField(auto_now=True)
 
 
 
