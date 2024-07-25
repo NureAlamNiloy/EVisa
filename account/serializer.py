@@ -34,7 +34,9 @@ class UserSerializer(serializers.ModelSerializer):
         account.save()
         return account
 
-
+class VerifyAccountSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField()
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

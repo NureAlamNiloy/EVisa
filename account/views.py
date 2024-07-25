@@ -1,4 +1,4 @@
-from .serializer import UserSerializer, LoginSerializer
+from .serializer import UserSerializer, LoginSerializer, VerifyAccountSerializer
 from .models import CustomUser
 from rest_framework import viewsets, views, permissions, exceptions
 from rest_framework.response import Response
@@ -14,7 +14,7 @@ from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-
+import random
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
@@ -24,41 +24,47 @@ from django.template.loader import render_to_string
 
 # Create your views here.
 
-
-
 class RegisterView(views.APIView):
     serializer_class = UserSerializer
     def post(self,request):
         serializer = self.serializer_class(data= request.data)
         if serializer.is_valid():
             user = serializer.save()
-            token = default_token_generator.make_token(user)
-            uniqueId = urlsafe_base64_encode(force_bytes(user.pk))
-            email_link = f"http://127.0.0.1:8000/account/active/{uniqueId}/{token}"
+            otp = random.randint(1000,9999)
             email_subject = "Confirm Your Email"
-            email_body = render_to_string("confirm_email.html", {"email_link" : email_link})
-
+            email_body = render_to_string("confirm_email.html", {"otp" : otp})
             email = EmailMultiAlternatives(email_subject, " ", to=[user.email])
             email.attach_alternative(email_body, "text/html")
             email.send()
+
+            user.otp = otp
+            user.save()
             return Response({"message": "Check your email to verify your account."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def activate(request, uid64, token):
-    try:
-        uid = urlsafe_base64_decode(uid64).decode()
-        user = CustomUser._default_manager.get(pk=uid)
-    except(CustomUser.DoesNotExist):
-        user = None
-    
-    if user is not None and default_token_generator.check_token(user, token):
-        user.is_active = True
-        user.save()
-        return HttpResponse("Account activated successfully. Please log in.", status=200)
-    else:
-        return HttpResponse("Activation link is invalid or has expired.", status=400)
-         
- 
+
+class VerifyOTP(views.APIView):
+    serializer_class = VerifyAccountSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)    
+        try:
+            if serializer.is_valid():
+                email = serializer.validated_data.get("email")
+                otp = serializer.validated_data.get("otp")
+                user = CustomUser.objects.get(email=email)
+                if user.otp != otp:
+                    return Response({"message": "Invalid OTP. Please try again."}, status=status.HTTP_400_BAD_REQUEST)
+
+                user.is_active = True
+                user.otp = None 
+                user.save()
+                return Response({"message": "Registration successful. Your account is now active."}, status=status.HTTP_201_CREATED)
+
+        except CustomUser.DoesNotExist:
+            return Response({"message": "User not found. Please check your email address."}, status=status.HTTP_400_BAD_REQUEST)
+
+        
 
 class LoginViewset(views.APIView):
     authentication_classes = [SessionAuthentication]
