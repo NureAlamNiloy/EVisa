@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import VisaApplication
+from .models import VisaApplication, VisaStatus
 
 
 class VisaApplicationSerializer(serializers.ModelSerializer):
@@ -9,3 +9,7 @@ class VisaApplicationSerializer(serializers.ModelSerializer):
         read_only_fields = ['user']
 
 
+class VisaStatusSerializer(serializers.ModelField):
+    class Meta:
+        model = VisaStatus
+        fields = '__all__'

@@ -75,6 +75,3 @@ class VisaStatus(models.Model):
 
 
 
-
-
-

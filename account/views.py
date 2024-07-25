@@ -54,7 +54,7 @@ class VerifyOTP(views.APIView):
                 otp = serializer.validated_data.get("otp")
                 user = CustomUser.objects.get(email=email)
                 if user.otp != otp:
-                    return Response({"message": "Invalid OTP. Please try again."}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"message": "Invalid OTP. Check your mail.."}, status=status.HTTP_400_BAD_REQUEST)
 
                 user.is_active = True
                 user.otp = None 
