@@ -1,6 +1,7 @@
 from django.db import models
 from account.models import CustomUser
 from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.conf import settings
 
 # Create your models here.
@@ -77,10 +78,11 @@ class VisaStatus(models.Model):
         if self.pk:
             old_status = VisaStatus.objects.get(pk=self.pk).visa_status
             if old_status != self.visa_status:
-                subject = f"Your visa application is now on {self.visa_status}"
-                massage = f"{self.massage}"
-                mail = [self.visa_application.email]
-                send_mail(subject, massage, settings.EMAIL_HOST_USER, mail)
+                subject = f"Visa application Update {self.visa_status}"
+                massage = render_to_string("status.html", {'visa_status': self.visa_status, 'massage': self.massage})
+                email = EmailMultiAlternatives(subject, " ", to=[self.visa_application.email])
+                email.attach_alternative(massage, "text/html")
+                email.send()
         super().save(*args, **kwargs)
     class Meta:
         ordering = ['update_at']
