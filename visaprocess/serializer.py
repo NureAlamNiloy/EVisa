@@ -9,7 +9,7 @@ class VisaApplicationSerializer(serializers.ModelSerializer):
         read_only_fields = ['user']
 
 
-class VisaStatusSerializer(serializers.ModelField):
+class VisaStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = VisaStatus
         fields = '__all__'

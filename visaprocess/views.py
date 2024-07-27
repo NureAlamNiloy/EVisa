@@ -3,6 +3,7 @@ from rest_framework import viewsets, permissions, views
 from .models import VisaApplication, VisaStatus
 from .serializer import VisaApplicationSerializer, VisaStatusSerializer
 from rest_framework.response import Response  
+from rest_framework import status
 
 # Create your views here.
 
@@ -18,8 +19,11 @@ class VisaStatusViewset(views.APIView):
     queryset = VisaStatus.objects.all()
     serializer_class = VisaStatusSerializer
 
-    # def get(self,request, tracking_id, format=None):
-    #     try:
+    def get(self,request, tracking_id, format=None):
+        try:
+            visa_status = VisaStatus.objects.get(traking_id=tracking_id)
+            serializer = VisaStatusSerializer(visa_status)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
-    #     except VisaStatus.DoesNotExist:
-    #         return Response{"massage:"}
+        except VisaStatus.DoesNotExist:
+            return Response({"massage: Traking id not found"}, status = status.HTTP_404_NOT_FOUND)

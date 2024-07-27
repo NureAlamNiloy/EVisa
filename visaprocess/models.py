@@ -67,7 +67,7 @@ VISASTATUS = [
     ('Approved', 'Approved'),
 ]
 class VisaStatus(models.Model):
-    visa = models.ForeignKey(VisaApplication, on_delete=models.CASCADE)
+    visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE)
     traking_id = models.CharField(max_length=250, null=True, blank=True)
     visa_status = models.CharField(max_length=100, default='Panding', choices=VISASTATUS)
     massage = models.TextField()
@@ -79,7 +79,7 @@ class VisaStatus(models.Model):
             if old_status != self.visa_status:
                 subject = f"Your visa application is now on {self.visa_status}"
                 massage = f"{self.massage}"
-                mail = [self.visa.email]
+                mail = [self.visa_application.email]
                 send_mail(subject, massage, settings.EMAIL_HOST_USER, mail)
         super().save(*args, **kwargs)
     class Meta:

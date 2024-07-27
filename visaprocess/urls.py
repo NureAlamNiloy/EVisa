@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import VisaApplicationViewset
+from .views import VisaApplicationViewset, VisaStatusViewset
 
 
 
@@ -10,6 +10,7 @@ router.register(r'visaapplication', VisaApplicationViewset, basename='visaapplic
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('visa-status/<str:tracking_id>/', VisaStatusViewset.as_view(), name="visastatus")
 ]
 
 
