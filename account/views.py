@@ -59,7 +59,14 @@ class VerifyOTP(views.APIView):
                 user.is_active = True
                 user.otp = None 
                 user.save()
-                return Response({"message": "Registration successful. Your account is now active."}, status=status.HTTP_201_CREATED)
+                return Response({
+               'username' : user.username,
+                'first_name' : user.first_name ,
+                'last_name' : user.last_name ,
+                'email' : user.email,
+                'phone_no' : user.phone_no,
+                "message": "Registration successful. Your account is now active."
+                }, status=status.HTTP_201_CREATED)
 
         except CustomUser.DoesNotExist:
             return Response({"message": "User not found. Please check your email address."}, status=status.HTTP_400_BAD_REQUEST)
@@ -80,7 +87,13 @@ class LoginViewset(views.APIView):
         if user:
             token, created = Token.objects.get_or_create(user=user)
             login(request, user)
-            return Response({'token': token.key, 'user_id': user.id, 'data': request.data}, status=status.HTTP_200_OK)
+            return Response({
+               'username' : user.username,
+                'first_name' : user.first_name ,
+                'last_name' : user.last_name ,
+                'email' : user.email,
+                'phone_no' : user.phone_no 
+            }, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
