@@ -4,4 +4,5 @@ from .models import VisaApplication, VisaStatus
 # Register your models here.
 
 admin.site.register(VisaApplication)
+admin.site.register(VisaStatus)
 

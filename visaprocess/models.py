@@ -1,5 +1,7 @@
 from django.db import models
 from account.models import CustomUser
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.conf import settings
 
 # Create your models here.
 VISA_TYPE = [
@@ -66,10 +68,22 @@ VISASTATUS = [
 ]
 class VisaStatus(models.Model):
     visa = models.ForeignKey(VisaApplication, on_delete=models.CASCADE)
-    traking_id = models.CharField(max_length=10, null=True, blank=True)
+    traking_id = models.CharField(max_length=250, null=True, blank=True)
     visa_status = models.CharField(max_length=100, default='Panding', choices=VISASTATUS)
     massage = models.TextField()
     update_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_status = VisaStatus.objects.get(pk=self.pk).visa_status
+            if old_status != self.visa_status:
+                subject = f"Your visa application is now on {self.visa_status}"
+                massage = f"{self.massage}"
+                mail = [self.visa.email]
+                send_mail(subject, massage, settings.EMAIL_HOST_USER, mail)
+        super().save(*args, **kwargs)
+    class Meta:
+        ordering = ['update_at']
 
 
 
