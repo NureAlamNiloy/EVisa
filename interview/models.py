@@ -9,10 +9,10 @@ from django.core.exceptions import ValidationError
 
 class InterviewDate(models.Model):
     interview_date = models.DateField(unique=True)
-    max_interview = models.IntegerField(default=3)
+    max_interview = models.IntegerField(default=1)
 
     def is_available(self):
-        return self.booking_slot.count() <= self.max_interview
+        return self.booking_slot.count() < self.max_interview
 
 class InterviewBooking(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

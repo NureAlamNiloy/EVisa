@@ -12,3 +12,4 @@ class InterviewBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = InterviewBooking
         fields = '__all__'
+        

@@ -27,10 +27,11 @@ class InterviewBookingView(views.APIView):
             booking = InterviewBooking(user=request.user, slot=slot, visa_application=visa_status.visa)
             booking.save()
             return Response({"message": "Interview slot booked successfully."}, status=status.HTTP_200_OK)
-            
+
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
-
+    def perform_create(self, serializer):
+        serializer.save(user = self.request.user)
 
 
