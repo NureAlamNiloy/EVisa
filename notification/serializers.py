@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import UserSupport
+from .models import notification
 
 
-class SupportSerializer(serializers.ModelSerializer):
+class NotificationSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = UserSupport
+        model = notification
         fields = ["massage"]
