@@ -8,7 +8,7 @@ import string
 @receiver(post_save, sender=VisaApplication)
 def create_VisaStatus(sender, instance, created, **kwargs):
     if created:
-        VisaStatus.objects.create(visa=instance, traking_id=create_TrakingId)
+        VisaStatus.objects.create(visa_application=instance, traking_id=create_TrakingId)
 
 def create_TrakingId():
     return ''.join(random.choices(string.ascii_letters+string.digits, k=10))

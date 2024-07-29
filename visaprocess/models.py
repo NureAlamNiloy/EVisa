@@ -22,6 +22,8 @@ GENDER = [
 class VisaApplication(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=20)
     visa_type = models.CharField(max_length=20, choices=VISA_TYPE)
     gender = models.CharField(max_length=30, choices=GENDER )
     date_of_birth = models.DateField()
@@ -37,8 +39,6 @@ class VisaApplication(models.Model):
     city = models.CharField(max_length=40)
     state_province = models.CharField(max_length=50)
     postal_code = models.IntegerField
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=20)
     purpose_of_visit  = models.TextField()
     planned_duration_of_stay = models.IntegerField()
     accommodation_details  = models.TextField()
