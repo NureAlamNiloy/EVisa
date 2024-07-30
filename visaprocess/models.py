@@ -11,7 +11,7 @@ VISA_TYPE = [
     ('Student', 'Student'),
     ('Work', 'Work'),
     ('Medical', 'Medical'),
-    ('Femily', 'Femily')
+    ('Family', 'Family')
 ]
 GENDER = [
     ('Mail', 'Mail'),
