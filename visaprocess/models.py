@@ -56,11 +56,10 @@ class VisaApplication(models.Model):
     rejected = models.BooleanField(default=False)
     is_modified = models.BooleanField(default=False)
     submission_date = models.DateField(auto_now_add=True)
-    # updated_at = models.DateField(auto_now=True)
 
     def __str__(self):
         return f"{self.user.username}, applicant: {self.full_name}"
-
+ 
 VISASTATUS = [
     ('Panding', 'Panding'),
     ('AdminApprove', 'AdminApprove'),

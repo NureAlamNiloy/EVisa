@@ -71,7 +71,7 @@ class VerifyOTP(views.APIView):
         except CustomUser.DoesNotExist:
             return Response({"message": "User not found. Please check your email address."}, status=status.HTTP_400_BAD_REQUEST)
 
-        
+
 
 class LoginViewset(views.APIView):
     authentication_classes = [SessionAuthentication]
