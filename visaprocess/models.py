@@ -85,6 +85,7 @@ class VisaStatus(models.Model):
         super().save(*args, **kwargs)
     class Meta:
         ordering = ['update_at']
+        verbose_name_plural = "Visa Status"
 
 
 
