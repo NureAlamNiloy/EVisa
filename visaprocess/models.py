@@ -46,7 +46,7 @@ class VisaApplication(models.Model):
     emergency_contact_relationship = models.CharField(max_length=20)
     emergency_contact_phone = models.CharField(max_length=20)
     emergency_contact_email = models.EmailField()
-    health_information = models.FileField(upload_to='health/')
+    travel_insurance = models.FileField(upload_to='health/')
     educational_background = models.CharField(max_length=255)
     applicant_signature = models.FileField(upload_to='signeture/')
     passport_photo = models.FileField(upload_to='passport/')
