@@ -9,11 +9,12 @@ from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
-
+ 
 class VisaApplicationViewset(viewsets.ModelViewSet):
+    print("okkkkkkkk1111")
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -30,4 +31,4 @@ class VisaStatusViewset(views.APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except VisaStatus.DoesNotExist:
-            return Response({"massage: Traking id not found"}, status = status.HTTP_404_NOT_FOUND)
+            return Response({"message: Traking id not found"}, status = status.HTTP_404_NOT_FOUND)

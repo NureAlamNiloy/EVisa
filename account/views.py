@@ -116,3 +116,4 @@ class LogoutViewset(views.APIView):
                 return Response({"error": "Token not found or already deleted"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error": "You are not logged in."}, status=status.HTTP_400_BAD_REQUEST)
+
