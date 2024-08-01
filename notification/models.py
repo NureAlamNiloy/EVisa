@@ -1,7 +1,7 @@
 from django.db import models
 from account.models import CustomUser
-from visaprocess.models import VisaApplication, VisaStatus
-from interview.models import InterviewBooking
+# from visaprocess.models import VisaApplication, VisaStatus
+# from interview.models import InterviewBooking
 
 # Create your models here.
 
