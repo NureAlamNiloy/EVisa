@@ -11,7 +11,7 @@ def create_VisaStatus(sender, instance, created, **kwargs):
         VisaStatus.objects.create(visa_application=instance, traking_id=create_TrakingId)
 
 def create_TrakingId():
-    return ''.join(random.choices(string.ascii_letters+string.digits, k=10))
+    return ''.join(random.choices(string.ascii_uppercase+string.digits, k=30))
 
 
 

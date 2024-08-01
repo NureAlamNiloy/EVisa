@@ -10,7 +10,7 @@ class notification(models.Model):
     visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE)
     visa_status = models.ForeignKey(VisaStatus, on_delete=models.CASCADE)
     interview_booking = models.ForeignKey(InterviewBooking, on_delete=models.CASCADE)
-    massage = models.TimeField()
+    massage = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     
 

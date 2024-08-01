@@ -27,6 +27,7 @@ urlpatterns = [
     path('notification/', include('notification.urls')),
     path('report/', include('report.urls')),
     path('interview/', include('interview.urls')),
+    path('payment/', include('payment.urls')),
 ]
 
 if settings.DEBUG:

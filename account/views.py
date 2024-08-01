@@ -57,15 +57,18 @@ class VerifyOTP(views.APIView):
                     return Response({"message": "Invalid OTP. Check your mail.."}, status=status.HTTP_400_BAD_REQUEST)
 
                 user.is_active = True
+                token, created = Token.objects.get_or_create(user=user)
                 user.otp = None 
                 user.save()
                 return Response({
-               'username' : user.username,
-                'first_name' : user.first_name ,
-                'last_name' : user.last_name ,
-                'email' : user.email,
-                'phone_no' : user.phone_no,
-                "message": "Registration successful. Your account is now active."
+                    'token': token.key,
+                    'user_id': user.id,
+                    'username' : user.username,
+                    'first_name' : user.first_name ,
+                    'last_name' : user.last_name ,
+                    'email' : user.email,
+                    'phone_no' : user.phone_no,
+                    "message": "Registration successful. Your account is now active."
                 }, status=status.HTTP_201_CREATED)
 
         except CustomUser.DoesNotExist:
@@ -88,7 +91,9 @@ class LoginViewset(views.APIView):
             token, created = Token.objects.get_or_create(user=user)
             login(request, user)
             return Response({
-               'username' : user.username,
+                'token': token.key,
+                'user_id': user.id,
+                'username' : user.username,
                 'first_name' : user.first_name ,
                 'last_name' : user.last_name ,
                 'email' : user.email,

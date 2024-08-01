@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "report",
     "interview",
     "notification",
+    "payment",
     'rest_framework',
     'rest_framework.authtoken',
 ]
@@ -185,8 +186,8 @@ EMAIL_HOST_USER = "mdniloy74779@gmail.com"
 EMAIL_HOST_PASSWORD = "xdzt vhfv zjwh gzkc"
 
 
-STRIPE_PUBLIC_KEY = ""
-STRIPE_SECRET_KEY = ""
+STRIPE_PUBLIC_KEY = "pk_test_51PiUJbRslcMqi7b5dmcXHgf7iAfQpoqLTskO1Ta10LK9oFDIx8nLaURHtoWU2BKVASrGTqPEJ8O92ROM0pHjqeEg005tKgOetw"
+STRIPE_SECRET_KEY = "sk_test_51PiUJbRslcMqi7b5ji9ffXKgOjUgXdmXv9VPGgHeFbMToDtbwhHS6Utu8D4rLIjDX1pgVCiV9EJ0uNbn1reO3rk000yTGXQC9L"
 STRIPE_WEBHOOK = ""
 
 
