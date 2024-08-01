@@ -1,16 +1,20 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions, views
+from rest_framework import viewsets, views, exceptions
 from .models import VisaApplication, VisaStatus
 from .serializer import VisaApplicationSerializer, VisaStatusSerializer
 from rest_framework.response import Response  
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication, get_authorization_header
+from rest_framework.permissions import IsAuthenticated
+
 
 # Create your views here.
 
 class VisaApplicationViewset(viewsets.ModelViewSet):
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)

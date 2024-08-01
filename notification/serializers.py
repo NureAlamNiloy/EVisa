@@ -6,4 +6,4 @@ class NotificationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = notification
-        fields = ["massage"]
+        fields = ["title","massage", "created_at"]
