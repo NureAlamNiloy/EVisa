@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     "report",
     "interview",
     "notification",
-    "payment",
+    # "payment",
     'rest_framework',
     'rest_framework.authtoken',
 ]
