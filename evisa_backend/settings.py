@@ -25,30 +25,21 @@ SECRET_KEY = 'django-insecure-y+@d)l12=5j%z5-%0^)^!-z6%f7d14=6ojs!io7@8c^ysq*)z@
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-CORS_ALLOW_ALL_ORIGINS = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173',
-    'https://evisa-z93n.onrender.com',
-    'http://localhost:8080',
-    'http://127.0.0.1:8000',
-    'http://*.127.0.0.1',
-    'http://*.localhost' 
-    ]
 
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     "account",
     "support",
     "visaprocess",
@@ -65,10 +56,10 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     
     'django.middleware.security.SecurityMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -130,6 +121,30 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     'http://localhost:5173',
+#     'https://evisa-z93n.onrender.com',
+#     'http://localhost:8080',
+#     'http://127.0.0.1:8000',
+#     'http://*.127.0.0.1',
+#     'http://*.localhost'   
+# ]
+
+CORS_ALLOW_HEADERS = '*'
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://192.168.1.155:8000/",
+    "http://localhost:3000",
+    'http://localhost:5173',
+    'https://evisa-z93n.onrender.com',
+    'http://localhost:8080',
+    'http://127.0.0.1:8000',
+    'http://*.127.0.0.1',
+    'http://*.localhost' 
+    ] 
 
 
 # Password validation
