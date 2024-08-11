@@ -11,7 +11,6 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
  
 class VisaApplicationViewset(viewsets.ModelViewSet):
-    print("okkkkkkkk1111")
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
     # authentication_classes = [TokenAuthentication]

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
     "account",
     "support",
     "visaprocess",
@@ -47,8 +49,6 @@ INSTALLED_APPS = [
     "interview",
     "notification",
     # "payment",
-    'rest_framework',
-    'rest_framework.authtoken',
 ]
 
 
