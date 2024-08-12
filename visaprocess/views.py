@@ -6,14 +6,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from account.authentication import CsrfExemptSessionAuthentication
 
 
 # Create your views here.
  
 class VisaApplicationViewset(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication,CsrfExemptSessionAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
-    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)

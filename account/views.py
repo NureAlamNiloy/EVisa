@@ -11,7 +11,7 @@ from django.shortcuts import redirect
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 import random
@@ -77,7 +77,7 @@ class VerifyOTP(views.APIView):
 
 
 class LoginViewset(views.APIView):
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [TokenAuthentication]
     serializer_class = LoginSerializer
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)

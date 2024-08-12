@@ -27,24 +27,7 @@ SECRET_KEY = 'django-insecure-y+@d)l12=5j%z5-%0^)^!-z6%f7d14=6ojs!io7@8c^ysq*)z@
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
-CSRF_COOKIE_SECURE = False
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://evisa-z93n.onrender.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:8000",
-]
-CORS_ORIGIN_ALLOW_ALL = True
-
-CORS_ALLOW_HEADERS = [
-    'authorization',
-    'content-type',
-    'x-csrftoken',
-    'accept',
-    'origin',
-]
-CORS_ALLOW_CREDENTIALS = True
+# CSRF_COOKIE_SECURE = False
 
 CSRF_TRUSTED_ORIGINS = [
     "http://192.168.1.155:8000",
@@ -57,7 +40,30 @@ CSRF_TRUSTED_ORIGINS = [
     'http://*.localhost' 
 ]
 
+CORS_ORIGIN_WHITELIST =  [
+    "http://192.168.1.155:8000",
+    "http://localhost:3000",
+    'http://localhost:5173',
+    'https://evisa-z93n.onrender.com',
+    'http://localhost:8080',
+    'http://127.0.0.1:8000',
+    'http://*.127.0.0.1',
+    'http://*.localhost' 
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.1.155:8000",
+    "http://localhost:3000",
+    'http://localhost:5173',
+    'https://evisa-z93n.onrender.com',
+    'http://localhost:8080',
+    'http://127.0.0.1:8000',
+    'http://*.127.0.0.1',
+    'http://*.localhost' 
+]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOW_HEADERS = '*'
 
 # Application definition
 
@@ -140,6 +146,7 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAuthenticated',
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [
