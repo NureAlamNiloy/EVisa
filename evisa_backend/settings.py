@@ -141,8 +141,8 @@ DATABASES = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-        'account.authentication.CsrfExemptSessionAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'account.authentication.CsrfExemptSessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication', 
     ],
     'DEFAULT_PERMISSION_CLASSES': (
