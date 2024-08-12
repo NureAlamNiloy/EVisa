@@ -28,6 +28,35 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://evisa-z93n.onrender.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:8000",
+]
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',
+    'x-csrftoken',
+    'accept',
+    'origin',
+]
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://192.168.1.155:8000",
+    "http://localhost:3000",
+    'http://localhost:5173',
+    'https://evisa-z93n.onrender.com',
+    'http://localhost:8080',
+    'http://127.0.0.1:8000',
+    'http://*.127.0.0.1',
+    'http://*.localhost' 
+]
+
 
 
 # Application definition
@@ -121,30 +150,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    'http://localhost:5173',
-    'https://evisa-z93n.onrender.com',
-    'http://localhost:8080',
-    'http://127.0.0.1:8000',
-    'http://*.127.0.0.1',
-    'http://*.localhost'   
-]
-
-CORS_ALLOW_HEADERS = '*'
-CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://192.168.1.155:8000/",
-    "http://localhost:3000",
-    'http://localhost:5173',
-    'https://evisa-z93n.onrender.com',
-    'http://localhost:8080',
-    'http://127.0.0.1:8000',
-    'http://*.127.0.0.1',
-    'http://*.localhost' 
-] 
 
 
 # Password validation

@@ -68,7 +68,7 @@ VISASTATUS = [
 ]
 class VisaStatus(models.Model):
     visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE)
-    traking_id = models.CharField(max_length=250, null=True, blank=True)
+    traking_id = models.CharField(max_length=250, unique=True, null=True, blank=True)
     visa_status = models.CharField(max_length=100, default='Panding', choices=VISASTATUS)
     massage = models.TextField()
     update_at = models.DateTimeField(auto_now=True)
