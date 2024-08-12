@@ -25,9 +25,9 @@ SECRET_KEY = 'django-insecure-y+@d)l12=5j%z5-%0^)^!-z6%f7d14=6ojs!io7@8c^ysq*)z@
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = ["*"]
 
+CSRF_COOKIE_SECURE = False
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
@@ -84,11 +84,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -217,6 +216,8 @@ EMAIL_HOST_PASSWORD = "xdzt vhfv zjwh gzkc"
 STRIPE_PUBLIC_KEY = "pk_test_51PiUJbRslcMqi7b5dmcXHgf7iAfQpoqLTskO1Ta10LK9oFDIx8nLaURHtoWU2BKVASrGTqPEJ8O92ROM0pHjqeEg005tKgOetw"
 STRIPE_SECRET_KEY = "sk_test_51PiUJbRslcMqi7b5ji9ffXKgOjUgXdmXv9VPGgHeFbMToDtbwhHS6Utu8D4rLIjDX1pgVCiV9EJ0uNbn1reO3rk000yTGXQC9L"
 STRIPE_WEBHOOK = ""
+
+
 
 
 
