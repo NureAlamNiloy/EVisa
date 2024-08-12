@@ -4,6 +4,7 @@ from .models import VisaApplication, VisaStatus
 from .serializer import VisaApplicationSerializer, VisaStatusSerializer
 from rest_framework.response import Response  
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
