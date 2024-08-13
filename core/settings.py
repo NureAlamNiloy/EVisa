@@ -156,13 +156,31 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=100)
 }
 
-# CORS
-CORS_ALLOWED_ORIGINS_ALL = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://*127.0.0.1",
-    "http://*localhost",
+
+# Django CORS Header
+CORS_ORIGIN_WHITELIST =  [
+    "http://192.168.1.155:8000",
+    "http://localhost:3000",
+    'http://localhost:5173',
+    'https://evisa-z93n.onrender.com',
+    'http://localhost:8080',
+    'http://127.0.0.1:8000',
+    'http://*.127.0.0.1',
+    'http://*.localhost' 
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.1.155:8000",
+    "http://localhost:3000",
+    'http://localhost:5173',
+    'https://evisa-z93n.onrender.com',
+    'http://localhost:8080',
+    'http://127.0.0.1:8000',
+    'http://*.127.0.0.1',
+    'http://*.localhost' 
+]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = '*'
 
 # Custom User
 AUTH_USER_MODEL = 'account.CustomUser'
