@@ -12,13 +12,15 @@ from account.authentication import CsrfExemptSessionAuthentication
 # Create your views here.
  
 class VisaApplicationViewset(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication,CsrfExemptSessionAuthentication]
     permission_classes = [IsAuthenticated]
+    authentication_classes = [CsrfExemptSessionAuthentication]
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
+    
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
+        # print(f'This my token {self.request.user.token}')
 
 class VisaStatusViewset(views.APIView):
     queryset = VisaStatus.objects.all()

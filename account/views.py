@@ -12,6 +12,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
+from account.authentication import CsrfExemptSessionAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 import random
@@ -77,7 +78,7 @@ class VerifyOTP(views.APIView):
 
 
 class LoginViewset(views.APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, CsrfExemptSessionAuthentication]
     serializer_class = LoginSerializer
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -104,7 +105,7 @@ class LoginViewset(views.APIView):
 
 
 class LogoutViewset(views.APIView):
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [SessionAuthentication, CsrfExemptSessionAuthentication]
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
