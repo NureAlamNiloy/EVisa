@@ -1,3 +1,4 @@
+
 from django.db import models
 from account.models import CustomUser
 from django.core.mail import send_mail, EmailMultiAlternatives
@@ -86,7 +87,6 @@ class VisaStatus(models.Model):
     class Meta:
         ordering = ['update_at']
         verbose_name_plural = "Visa Status"
-
 
 
 

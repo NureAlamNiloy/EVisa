@@ -41,3 +41,22 @@ class VerifyAccountSerializer(serializers.Serializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+class ChangePasswordSerializer(serializers.Serializer):
+    password = serializers.CharField()
+    password2 = serializers.CharField()
+    class Meta:
+        fields = ["password", "password2"]
+    
+
+class SendResetPasswordEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    class Meta:
+        fields = ['email']
+
+class ResetPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField()
+    password2 = serializers.CharField()
+    class Meta:
+        fields = ["password", "password2"]
+

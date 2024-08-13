@@ -23,4 +23,3 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_active', True)
 
         return self.create_user(phone_no,email,password,**extra_fields)
-
