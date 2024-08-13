@@ -61,8 +61,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # Add CORS middleware
-    "corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",# Add CORS middleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -147,8 +146,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # JWT settings
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=100),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1000000),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=100)
 }
 
 # CORS
@@ -173,3 +172,17 @@ EMAIL_HOST_PASSWORD = "xdzt vhfv zjwh gzkc"
 
 # Password reset link expired Time
 PASSWORD_RESET_TIMEOUT = 10000
+
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = [
+    "http://192.168.1.155:8000",
+    "http://localhost:3000",
+    'http://localhost:5173',
+    'https://evisa-z93n.onrender.com',
+    'http://localhost:8080',
+    'http://127.0.0.1:8000',
+    'http://*.127.0.0.1',
+    'http://*.localhost',
+] 
+
+
