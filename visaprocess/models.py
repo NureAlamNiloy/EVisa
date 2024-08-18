@@ -79,9 +79,9 @@ class VisaStatus(models.Model):
             old_status = VisaStatus.objects.get(pk=self.pk).visa_status
             if old_status != self.visa_status:
                 subject = f"Visa application Update {self.visa_status}"
-                massage = render_to_string("status.html", {'visa_status': self.visa_status, 'massage': self.massage, 'traking_id': self.traking_id})
+                message = render_to_string("status.html", {'visa_status': self.visa_status, 'message': self.message, 'traking_id': self.traking_id})
                 email = EmailMultiAlternatives(subject, " ", to=[self.visa_application.email])
-                email.attach_alternative(massage, "text/html")
+                email.attach_alternative(message, "text/html")
                 email.send()
         super().save(*args, **kwargs)
     class Meta:
