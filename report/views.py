@@ -28,10 +28,12 @@ class ApproveRejectReportView(APIView):
     def get(self, request):
         approve_count = VisaApplication.objects.filter(is_approved=True).count()
         reject_count = VisaApplication.objects.filter(rejected=True).count()
+        total_application = VisaApplication.objects.count()
 
         data = {
             'total_approve' : approve_count,
-            'total_reject' : reject_count
+            'total_reject' : reject_count,
+            'total_application' : total_application
         }
 
         return Response(data)
