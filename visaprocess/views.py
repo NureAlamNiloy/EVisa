@@ -15,6 +15,11 @@ class VisaApplicationViewset(viewsets.ModelViewSet):
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
     
+    def retrieve(self, request, *args, **kwargs):
+        # This handles GET for a specific application and includes the status
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)

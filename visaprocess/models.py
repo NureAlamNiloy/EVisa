@@ -68,10 +68,10 @@ VISASTATUS = [
     ('Approved', 'Approved'),
 ]
 class VisaStatus(models.Model):
-    visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE)
+    visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE, related_name='visa_statuses')
     traking_id = models.CharField(max_length=250, unique=True, null=True, blank=True)
     visa_status = models.CharField(max_length=100, default='Panding', choices=VISASTATUS)
-    massage = models.TextField()
+    message = models.TextField(null=True, blank=True)
     update_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
