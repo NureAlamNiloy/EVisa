@@ -62,7 +62,7 @@ class VisaApplication(models.Model):
         return f"{self.user.username}, applicant: {self.full_name}"
  
 VISASTATUS = [
-    ('Panding', 'Panding'),
+    ('Pending', 'Pending'),
     ('AdminApprove', 'AdminApprove'),
     ('PoliceVerification', 'PoliceVerification'),
     ('Approved', 'Approved'),
@@ -70,7 +70,7 @@ VISASTATUS = [
 class VisaStatus(models.Model):
     visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE, related_name='visa_statuses')
     traking_id = models.CharField(max_length=250, unique=True, null=True, blank=True)
-    visa_status = models.CharField(max_length=100, default='Panding', choices=VISASTATUS)
+    visa_status = models.CharField(max_length=100, default='Pending', choices=VISASTATUS)
     message = models.TextField(null=True, blank=True)
     update_at = models.DateTimeField(auto_now=True)
 
