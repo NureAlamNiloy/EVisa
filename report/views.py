@@ -9,18 +9,18 @@ from django.db.models import Count
 class VisaTypeReportView(APIView):
     def get(self,request):
         visatype_count = VisaApplication.objects.values('visa_type').annotate(count=Count('id'))
-        data = {
-            'visa_types':{item['visa_type']:item['count'] for item in visatype_count}
-        }
-        return Response(data )
+        all_types = [ 'Tourist', 'Business', 'Student','Work', 'Medical', 'Medical','Family', 'Family']
+        type_count_dict = {item['visa_type']:item['count'] for item in visatype_count}
+        data = {types:type_count_dict.get(types,0) for types in all_types}
+        return Response(data)
 
 
 class VisaStatusReportView(APIView):
     def get(self, request):
         visaStatus_count = VisaStatus.objects.values('visa_status').annotate(count=Count('id'))
-        data = {
-            'visa_statuses' : {item['visa_status']:item['count'] for item in visaStatus_count}
-        }
+        all_statuses = ['Panding','AdminApprove','PoliceVerification','Approved']
+        status_count_dict = {item['visa_status']: item['count'] for item in visaStatus_count}
+        data = {status: status_count_dict.get(status, 0) for status in all_statuses}
         return Response(data )
 
 
