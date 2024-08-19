@@ -5,6 +5,7 @@ class VisaStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = VisaStatus
         fields = '__all__'
+    
 
 
 class VisaApplicationSerializer(serializers.ModelSerializer):

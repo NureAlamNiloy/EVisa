@@ -69,7 +69,7 @@ VISASTATUS = [
 ]
 class VisaStatus(models.Model):
     visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE, related_name='visa_statuses')
-    traking_id = models.CharField(max_length=250, unique=True, null=True, blank=True)
+    tracking_id = models.CharField(max_length=250, unique=True, null=True, blank=True)
     visa_status = models.CharField(max_length=100, default='Pending', choices=VISASTATUS)
     message = models.TextField(null=True, blank=True)
     update_at = models.DateTimeField(auto_now=True)
@@ -79,7 +79,7 @@ class VisaStatus(models.Model):
             old_status = VisaStatus.objects.get(pk=self.pk).visa_status
             if old_status != self.visa_status:
                 subject = f"Visa application Update {self.visa_status}"
-                message = render_to_string("status.html", {'visa_status': self.visa_status, 'message': self.message, 'traking_id': self.traking_id})
+                message = render_to_string("status.html", {'visa_status': self.visa_status, 'message': self.message, 'tracking_id': self.tracking_id})
                 email = EmailMultiAlternatives(subject, " ", to=[self.visa_application.email])
                 email.attach_alternative(message, "text/html")
                 email.send()
