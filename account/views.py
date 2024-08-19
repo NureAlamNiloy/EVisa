@@ -99,6 +99,7 @@ class LoginViewset(views.APIView):
             login(request, user)
             return Response({
                 'token' : token,
+                'user_id': user.id,
                 'username' : user.username,
                 'first_name' : user.first_name ,
                 'last_name' : user.last_name ,

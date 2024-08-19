@@ -43,7 +43,7 @@ class VisaStatusViewset(views.APIView):
             serializer = VisaStatusSerializer(visa_status, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response({"message": "Status Update Successfully Hridoy Pagla"}, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except VisaStatus.DoesNotExist:
             return Response({"message": "Tracking ID not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -54,7 +54,8 @@ class CountTotalUserApplication(views.APIView):
         if request.user.id != int(user_id):
             return Response({"message": "You do not have permission to view this user's data."}, status=status.HTTP_403_FORBIDDEN)
         
-        total_application = VisaApplication.objects.filter(user_id=user_id).count()
-        return Response({"user_id": user_id, "application_Count": total_application}, status=status.HTTP_200_OK)
+        total_application = VisaApplication.objects.filter(user_id=user_id)
+        serializer = VisaApplicationSerializer(total_application, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
