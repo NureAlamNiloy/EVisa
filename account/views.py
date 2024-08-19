@@ -110,8 +110,33 @@ class LoginViewset(views.APIView):
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class  LogoutViewset(views.APIView):
-    pass
+class AdminLoginViewset(views.APIView):
+    
+    def post(self, request, *args, **kwargs):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
+            user = authenticate(request, email=email, password=password)
+
+        if user:
+            if user.is_staff or user.is_superuser:
+                token = get_tokens_for_user(user)
+                login(request, user)
+                return Response({
+                    'token' : token,
+                    'user_id': user.id,
+                    'username' : user.username,
+                    'first_name' : user.first_name ,
+                    'last_name' : user.last_name ,
+                    'email' : user.email,
+                    'phone_no' : user.phone_no 
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'User is not an admin'}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class ChangePasswordView(views.APIView):
     permission_classes = [IsAuthenticated]
