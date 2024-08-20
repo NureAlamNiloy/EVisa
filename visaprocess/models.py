@@ -87,6 +87,9 @@ class VisaStatus(models.Model):
     class Meta:
         ordering = ['update_at']
         verbose_name_plural = "Visa Status"
+    
+    def __str__(self):
+        return f"Applicant: {self.visa_application.full_name}"
 
 
 
