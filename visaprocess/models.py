@@ -24,19 +24,19 @@ GENDER = [
 
 
 def travel_insurance_upload_to(instance, filename):
-    return f"thumbnail_images/{instance.full_name}_{uuid.uuid4().hex[:8]}{os.path.splitext(filename)[1]}"
+    return f"thumbnail_images/{instance.full_name}_{instance.user.id}{os.path.splitext(filename)[1]}"
 
 def applicant_signature_upload_to(instance, filename):
-    return f"signeture/{instance.full_name}_{uuid.uuid4().hex[:8]}{os.path.splitext(filename)[1]}"
+    return f"signeture/{instance.full_name}_{instance.user.id}{os.path.splitext(filename)[1]}"
 
 def passport_photo_upload_to(instance, filename):
-    return f"passport/{instance.full_name}_{uuid.uuid4().hex[:8]}{os.path.splitext(filename)[1]}"
+    return f"passport/{instance.full_name}_{instance.user.id}{os.path.splitext(filename)[1]}"
 
 def user_photo_upload_to(instance, filename):
-    return f"applicant_photo/{instance.full_name}_{uuid.uuid4().hex[:8]}{os.path.splitext(filename)[1]}"
+    return f"applicant_photo/{instance.full_name}_{instance.user.id}{os.path.splitext(filename)[1]}"
 
 def health_ensurence_upload_to(instance, filename):
-    return f"health_ensurence/{instance.full_name}_{uuid.uuid4().hex[:8]}{os.path.splitext(filename)[1]}"
+    return f"health_ensurence/{instance.full_name}_{instance.user.id}{os.path.splitext(filename)[1]}"
 
 
 class VisaApplication(models.Model):
