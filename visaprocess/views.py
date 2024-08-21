@@ -5,6 +5,8 @@ from .serializer import VisaApplicationSerializer, VisaStatusSerializer
 from rest_framework.response import Response  
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+import base64
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -14,11 +16,18 @@ class VisaApplicationViewset(viewsets.ModelViewSet):
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
     
-    # This handles GET for a specific application and includes the status
-    # def retrieve(self, request, *args, **kwargs):
-    #     instance = self.get_object()
-    #     serializer = self.get_serializer(instance)
-    #     return Response(serializer.data)
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            decoded_bytes = base64.urlsafe_b64decode(kwargs['pk']) 
+            decoded_id = int(decoded_bytes.decode('utf-8'))
+            instance = self.get_queryset().get(id=decoded_id)
+            serializer = self.get_serializer(instance)
+            print(decoded_bytes)
+            print(decoded_id)
+        except ValueError:
+             return Response({"message: Id not found"}, status = status.HTTP_404_NOT_FOUND) 
+        
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
