@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     # Add apps for work
     "corsheaders",
     'rest_framework',
-    'django_filters',
     'rest_framework_simplejwt',
+    'django_filters',
     'account',
     "interview",
     "notification",
