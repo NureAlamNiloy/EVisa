@@ -56,7 +56,6 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication', #JWT authentication
     ]
 }
@@ -182,6 +181,13 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = '*'
+CORS_ALLOW_HEADERS = [
+    'content-disposition', 
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # Custom User
 AUTH_USER_MODEL = 'account.CustomUser'
