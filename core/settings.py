@@ -138,8 +138,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -163,8 +163,7 @@ CORS_ORIGIN_WHITELIST =  [
     "http://localhost:3000",
     'http://localhost:5173',
     'https://evisa-z93n.onrender.com/',
-    'https://*.evisa-z93n.onrender.com/',
-    'https://*.evisa-z93n.onrender.com/*',
+    'https://evisa-z93n.onrender.com/*',
     'http://localhost:8080',
     'http://127.0.0.1:8000',
     'http://*.127.0.0.1',
