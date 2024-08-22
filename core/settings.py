@@ -180,7 +180,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = '*'
 CORS_ALLOW_HEADERS = [
     'content-disposition', 
     'content-type',
@@ -188,6 +187,7 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+# CORS_ALLOW_HEADERS = '*'
 
 # Custom User
 AUTH_USER_MODEL = 'account.CustomUser'
