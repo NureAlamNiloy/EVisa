@@ -67,7 +67,7 @@ class VisaStatusViewset(views.APIView):
 class UserAllApplication(views.APIView):
     pagination_class = ListPagination
     filter_backends = [filters.SearchFilter]
-    search_fields = ['full_name', 'email', 'phone_number']
+    search_fields = ['full_name', 'email', 'phone_number', 'user__username']
     def get(self, request, user_id):
         if request.user.id != int(user_id):
             return Response({"message": "You do not have permission to view this user's data."}, status=status.HTTP_403_FORBIDDEN)
