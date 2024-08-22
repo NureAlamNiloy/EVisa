@@ -1,20 +1,26 @@
-from django.shortcuts import render
-from rest_framework import viewsets, views, exceptions
+from rest_framework import viewsets, views, filters, pagination
 from .models import VisaApplication, VisaStatus
 from .serializer import VisaApplicationSerializer, VisaStatusSerializer
 from rest_framework.response import Response  
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 import base64
-from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
+
+class ListPagination(pagination.PageNumberPagination):
+    page_size = 1
+    page_size_query_param = 'page_size'
+    max_page_size = 200
  
 class VisaApplicationViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
+    pagination_class = ListPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['full_name', 'email', 'phone_number']
     
     def retrieve(self, request, *args, **kwargs):
         try:
@@ -58,7 +64,10 @@ class VisaStatusViewset(views.APIView):
             return Response({"message": "Tracking ID not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
-class CountTotalUserApplication(views.APIView):
+class UserAllApplication(views.APIView):
+    pagination_class = ListPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['full_name', 'email', 'phone_number']
     def get(self, request, user_id):
         if request.user.id != int(user_id):
             return Response({"message": "You do not have permission to view this user's data."}, status=status.HTTP_403_FORBIDDEN)
