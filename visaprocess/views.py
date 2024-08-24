@@ -22,18 +22,29 @@ class VisaApplicationViewset(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['full_name', 'email', 'phone_number']
     
-    # def retrieve(self, request, *args, **kwargs):
-    #     try:
-    #         decoded_bytes = base64.urlsafe_b64decode(kwargs['pk']) 
-    #         decoded_id = int(decoded_bytes.decode('utf-8'))
-    #         instance = self.get_queryset().get(id=decoded_id)
-    #         serializer = self.get_serializer(instance)
-    #         print(decoded_bytes)
-    #         print(decoded_id)
-        # except ValueError:
-        #      return Response({"message: Id not found"}, status = status.HTTP_404_NOT_FOUND) 
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            decoded_bytes = base64.urlsafe_b64decode(kwargs['pk']) 
+            decoded_id = int(decoded_bytes.decode('utf-8'))
+            instance = self.get_queryset().get(id=decoded_id)
+            serializer = self.get_serializer(instance)
+        except ValueError:
+             return Response({"message: Id not found"}, status = status.HTTP_404_NOT_FOUND) 
         
-        # return Response(serializer.data)
+        return Response(serializer.data)
+    
+    def update(self, request, *args, **kwargs):
+        try:
+            decoded_bytes = base64.urlsafe_b64decode(kwargs['pk']) 
+            decoded_id = int(decoded_bytes.decode('utf-8'))
+            instance = self.get_queryset().get(id=decoded_id)
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+        except ValueError:
+             return Response({"message: Id not found"}, status = status.HTTP_404_NOT_FOUND) 
+        
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)

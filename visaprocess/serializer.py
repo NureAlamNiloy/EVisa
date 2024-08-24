@@ -9,14 +9,14 @@ class VisaStatusSerializer(serializers.ModelSerializer):
 
 class VisaApplicationSerializer(serializers.ModelSerializer):
     visa_statuses = VisaStatusSerializer(many=True, read_only=True)
-    # encoded_id = serializers.SerializerMethodField()
+    encoded_id = serializers.SerializerMethodField()
     
     class Meta:
         model = VisaApplication
         fields = '__all__'
         read_only_fields = ['user']
     
-    # def get_encoded_id(self, obj):
-    #     encoded_id = base64.urlsafe_b64encode(str(obj.id).encode())
-    #     return encoded_id
+    def get_encoded_id(self, obj):
+        encoded_id = base64.urlsafe_b64encode(str(obj.id).encode())
+        return encoded_id
  
