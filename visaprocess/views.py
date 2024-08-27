@@ -1,4 +1,5 @@
 from rest_framework import viewsets, views, filters, pagination
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import VisaApplication, VisaStatus
 from .serializer import VisaApplicationSerializer, VisaStatusSerializer
 from rest_framework.response import Response  
@@ -10,7 +11,7 @@ import base64
 # Create your views here.
 
 class ListPagination(pagination.PageNumberPagination):
-    page_size = 1
+    page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 200
  
@@ -19,8 +20,9 @@ class VisaApplicationViewset(viewsets.ModelViewSet):
     queryset = VisaApplication.objects.all()
     serializer_class = VisaApplicationSerializer
     pagination_class = ListPagination
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['full_name', 'email', 'phone_number']
+    filterset_fields = ['visa_type', 'gender', 'is_approved', 'rejected', 'is_modified', 'submission_date']
     
     def retrieve(self, request, *args, **kwargs):
         try:
