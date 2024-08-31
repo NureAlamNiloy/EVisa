@@ -1,4 +1,5 @@
-from django.db.models.functions import TruncYear, TruncMonth, TruncWeek, ExtractWeek
+from django.db.models.functions import TruncYear, TruncMonth, TruncWeek
+from django.utils import timezone
 from rest_framework.views import APIView
 from visaprocess.models import VisaApplication, VisaStatus
 from rest_framework.response import Response
@@ -24,22 +25,27 @@ from django.db.models import Count
 #         return Response(data)
 
 
-
-# Weekly monthly, yearly report....
 class VisaTypeReportView(APIView):
     def get(self, request):
-        visatype_weekly = VisaApplication.objects.annotate(week=ExtractWeek('submission_date')).values('week', 'visa_type').annotate(count=Count('id'))
-        visatype_monthly = VisaApplication.objects.annotate(month=TruncMonth('submission_date')).values('month', 'visa_type').annotate(count=Count('id'))
-        visatype_yearly = VisaApplication.objects.annotate(year=TruncYear('submission_date')).values('year', 'visa_type').annotate(count=Count('id'))
+        now = timezone.now()
+        start_of_last_week = now - timezone.timedelta(days=now.weekday() + 7)
+        start_of_last_month = (now.replace(day=1) - timezone.timedelta(days=1)).replace(day=1)
+        start_of_last_year = now.replace(month=1, day=1) - timezone.timedelta(days=1)
+        start_of_last_year = start_of_last_year.replace(month=1, day=1)
+
+        visatype_weekly = VisaApplication.objects.filter(submission_date__gte=start_of_last_week).annotate(week=TruncWeek('submission_date')).values('week', 'visa_type').annotate(count=Count('id'))
+        visatype_monthly = VisaApplication.objects.filter(submission_date__gte=start_of_last_month).annotate(month=TruncMonth('submission_date')).values('month', 'visa_type').annotate(count=Count('id'))
+        visatype_yearly = VisaApplication.objects.filter(submission_date__gte=start_of_last_year).annotate(year=TruncYear('submission_date')).values('year', 'visa_type').annotate(count=Count('id'))
         visatype_total = VisaApplication.objects.values('visa_type').annotate(count=Count('id'))
 
         data = {
             "total" : list(visatype_total),
-            "weekly": list(visatype_weekly),
-            "monthly": list(visatype_monthly),
-            "yearly": list(visatype_yearly),
+            "last_week": list(visatype_weekly),
+            "last_month": list(visatype_monthly),
+            "last_year": list(visatype_yearly),
         }
         return Response(data)
+
 
 class VisaStatusReportView(APIView):
     def get(self, request):
