@@ -1,4 +1,4 @@
-from django.db.models.functions import TruncYear, TruncMonth, TruncWeek
+from django.db.models.functions import TruncYear, TruncMonth, TruncWeek, ExtractWeek
 from rest_framework.views import APIView
 from visaprocess.models import VisaApplication, VisaStatus
 from rest_framework.response import Response
@@ -28,7 +28,7 @@ from django.db.models import Count
 # Weekly monthly, yearly report....
 class VisaTypeReportView(APIView):
     def get(self, request):
-        visatype_weekly = VisaApplication.objects.annotate(week=TruncWeek('submission_date')).values('week', 'visa_type').annotate(count=Count('id'))
+        visatype_weekly = VisaApplication.objects.annotate(week=ExtractWeek('submission_date')).values('week', 'visa_type').annotate(count=Count('id'))
         visatype_monthly = VisaApplication.objects.annotate(month=TruncMonth('submission_date')).values('month', 'visa_type').annotate(count=Count('id'))
         visatype_yearly = VisaApplication.objects.annotate(year=TruncYear('submission_date')).values('year', 'visa_type').annotate(count=Count('id'))
         visatype_total = VisaApplication.objects.values('visa_type').annotate(count=Count('id'))

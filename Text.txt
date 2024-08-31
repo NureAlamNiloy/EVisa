@@ -1,0 +1,19 @@
+{
+"username" : "hridoy12",
+"first_name" : "Hridoy",
+"last_name" : "paul",
+"phone_no" : "01811391920",
+"email" : "niloy581567@gmail.com",
+"password" : "@Niloy123456",
+"password2" : "@Niloy123456"
+} 
+
+{
+"username" : "hridoy12",
+"password" : "@Niloy123456"
+} 
+
+{
+"email" : "niloy581567@gmail.com",
+"password" : "@Niloy123456"
+}  

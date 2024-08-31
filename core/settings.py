@@ -159,6 +159,9 @@ SIMPLE_JWT = {
 
 
 # Django CORS Header
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = '*'
 CORS_ORIGIN_WHITELIST =  [
     "http://192.168.1.155:8000",
     "http://localhost:3000",
@@ -180,16 +183,15 @@ CORS_ALLOWED_ORIGINS = [
     'http://*.127.0.0.1',
     'http://*.localhost' 
 ]
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = [
-    'content-disposition', 
-    'content-type',
-    'authorization',
-    'x-csrftoken',
-    'x-requested-with',
-]
-# CORS_ALLOW_HEADERS = '*'
+
+# CORS_ALLOW_HEADERS = [
+#     'content-disposition', 
+#     'content-type',
+#     'authorization',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ]
+
 
 # Custom User
 AUTH_USER_MODEL = 'account.CustomUser'
