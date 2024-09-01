@@ -4,7 +4,7 @@ from .models import Appointment
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['visa_application', 'interview_date']
+        fields = '__all__'
 
     def validate(self, data):
         date = data.get('interview_date')

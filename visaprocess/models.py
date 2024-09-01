@@ -1,4 +1,3 @@
-
 from django.db import models
 from account.models import CustomUser
 from django.core.mail import EmailMultiAlternatives
@@ -87,7 +86,7 @@ VISASTATUS = [
     ('Approved', 'Approved'),
 ]
 class VisaStatus(models.Model):
-    visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE, related_name='visa_statuses')
+    visa_application = models.ForeignKey(VisaApplication, related_name='visa_statuses', on_delete=models.CASCADE)
     tracking_id = models.CharField(max_length=250, unique=True, null=True, blank=True)
     visa_status = models.CharField(max_length=100, default='Pending', choices=VISASTATUS)
     message = models.TextField(null=True, blank=True)

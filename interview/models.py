@@ -5,7 +5,7 @@ from account.models import CustomUser
 # Create your models here.
 
 class Appointment(models.Model):
-    visa_application = models.ForeignKey(VisaApplication, on_delete=models.CASCADE)
+    visa_application = models.ForeignKey(VisaApplication,related_name='appointment', on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     interview_date = models.DateField()
     booked_at = models.DateTimeField(auto_now_add=True)
