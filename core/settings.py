@@ -153,8 +153,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # JWT settings
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10)
 }
 
 
