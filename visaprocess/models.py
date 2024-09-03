@@ -41,7 +41,7 @@ class VisaApplication(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
     email = models.EmailField()
-    phone_number = models.CharField(max_length=20)
+    phone_number = models.IntegerField()
     visa_type = models.CharField(max_length=20, choices=VISA_TYPE)
     gender = models.CharField(max_length=30, choices=GENDER )
     date_of_birth = models.DateField()
@@ -62,28 +62,38 @@ class VisaApplication(models.Model):
     accommodation_details  = models.TextField()
     emergency_contact_name = models.CharField(max_length=100)
     emergency_contact_relationship = models.CharField(max_length=20)
-    emergency_contact_phone = models.CharField(max_length=20)
+    emergency_contact_phone = models.IntegerField()
     emergency_contact_email = models.EmailField()
     educational_background = models.CharField(max_length=255)
     user_photo = models.FileField(upload_to=user_photo_upload_to)
     travel_insurance = models.FileField(upload_to=travel_insurance_upload_to)
     applicant_signature = models.FileField(upload_to=applicant_signature_upload_to)
-    passport_photo = models.FileField(upload_to=passport_photo_upload_to)
+    passport_front_photo = models.FileField(null=True, blank=True, upload_to=passport_photo_upload_to)
+    passport_back_photo = models.FileField(upload_to=passport_photo_upload_to)
     health_ensurence = models.FileField(upload_to=health_ensurence_upload_to)
     is_approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
     is_modified = models.BooleanField(default=False)
     submission_date = models.DateField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            subject = "Visa Application Success"
+            massage = render_to_string("success.html",{"name": self.full_name, 'submission_date':self.submission_date})
+            email = EmailMultiAlternatives(subject, " ", to=[self.email])
+            email.attach_alternative(massage, "text/html")
+            email.send()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user.username}, applicant: {self.full_name}"
  
 VISASTATUS = [
     ('Pending', 'Pending'),
-    ('AdminApprove', 'AdminApprove'),
-    ('PoliceVerification', 'PoliceVerification'),
     ('Approved', 'Approved'),
+    ('schedule', 'schedule'),
+    ('PoliceVerification', 'PoliceVerification'),
+    ('AdminApprove', 'AdminApprove'),
 ]
 class VisaStatus(models.Model):
     visa_application = models.ForeignKey(VisaApplication, related_name='visa_statuses', on_delete=models.CASCADE)
@@ -95,7 +105,7 @@ class VisaStatus(models.Model):
     def save(self, *args, **kwargs):
         if self.pk:
             old_status = VisaStatus.objects.get(pk=self.pk).visa_status
-            if old_status != self.visa_status:
+            if old_status != self.visa_status or old_status=='Pending':
                 subject = f"Visa application Update {self.visa_status}"
                 message = render_to_string("status.html", {'visa_status': self.visa_status, 'message': self.message, 'tracking_id': self.tracking_id})
                 email = EmailMultiAlternatives(subject, " ", to=[self.visa_application.email])
