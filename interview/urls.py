@@ -1,15 +1,11 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import AppointmentViewset, FullyBookedDatesView
+from django.urls import path
+from .views import AppointmentViewset, ScheduleSlotViewset, NoInterviewViewset
 
-
-
-router = DefaultRouter()
-router.register(r'appointment', AppointmentViewset, basename='appointment')
 
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('booked_dates/', FullyBookedDatesView.as_view(), name="booked_dates"),
+    path('no_interview_dates/', NoInterviewViewset.as_view(), name="no_interview_dates"),
+    path('slot/', ScheduleSlotViewset.as_view(), name="slot"),
+    path('appointment/', AppointmentViewset.as_view(), name="appointment"),
 ]
 

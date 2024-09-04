@@ -3,5 +3,8 @@ from .models import notification
 
 # Register your models here.
 
-admin.site.register(notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ["id", "title"]
+
+admin.site.register(notification, NotificationAdmin)
 

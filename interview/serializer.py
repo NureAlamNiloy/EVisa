@@ -1,5 +1,18 @@
 from rest_framework import serializers
-from .models import Appointment
+from .models import Appointment, NoInterview, ScheduleSlot
+
+
+class NoInterviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NoInterview
+        fields = '__all__'
+
+
+class ScheduleSlotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScheduleSlot
+        fields = '__all__'
+
 
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
