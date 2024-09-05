@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import Appointment, NoInterview, ScheduleSlot
+from .models import Appointment, AdminInterviewInfo, ScheduleSlot
 
 
-class NoInterviewSerializer(serializers.ModelSerializer):
+class AdminInterviewInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = NoInterview
+        model = AdminInterviewInfo
         fields = '__all__'
 
 

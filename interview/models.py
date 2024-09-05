@@ -4,19 +4,21 @@ from account.models import CustomUser
 
 # Create your models here.
 
-class NoInterview(models.Model):
-    no_interview_date = models.DateField()
+class AdminInterviewInfo(models.Model):
+    total_interview = models.IntegerField(default=10)
+    start_date = models.DateField()
+    end_date = models.DateField()
 
     def __str__(self):
         return f"No Interview at {self.no_interview_date}"
 
 class ScheduleSlot(models.Model):
-    interview_date = models.DateField()
-    start_time = models.TimeField(default="9:00")   
+    interview_date = models.DateField() 
+    start_time = models.TimeField(default="09:00")
     is_booked = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.interview_date}===={self.is_booked}" 
+        return f"{self.interview_date}={self.start_time}" 
 
 
 
@@ -32,6 +34,3 @@ class Appointment(models.Model):
     def __str__(self):
         return self.visa_application.full_name
     
-    
-
-
