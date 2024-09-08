@@ -3,7 +3,29 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .models import Appointment, AdminInterviewInfo, ScheduleSlot
 from .serializer import AppointmentSerializer, AdminInterviewInfoSerializer, ScheduleSlotSerializer
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
+from django.db.models import Count,Q,F
+
+class GetStartEndDate(APIView):
+    
+    def get(self, request):
+        try:
+            booked_dates = (
+                ScheduleSlot.objects.values('interview_date')
+                .annotate(total_slots=Count('id'), booked_slots=Count('id', filter=Q(is_booked=True)))
+                .filter(total_slots=F('booked_slots'))
+                .values_list('interview_date', flat=True)
+            )
+            interview_info = AdminInterviewInfo.objects.latest('id')
+            serializer = AdminInterviewInfoSerializer(interview_info)
+            return Response({
+                "start_date": serializer.data['start_date'],
+                "end_date": serializer.data['end_date'],
+                "fully_booked_dates": list(booked_dates)
+            }, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class AdminInterviewInfoViewset(APIView):
     
