@@ -4,7 +4,7 @@ from .views import AppointmentViewset, ScheduleSlotViewset, AdminInterviewInfoVi
 
 
 urlpatterns = [
-    path('no_interview_dates/', AdminInterviewInfoViewset.as_view(), name="no_interview_dates"),
+    path('interview_admin/', AdminInterviewInfoViewset.as_view(), name="no_interview_dates"),
     path('slot/', ScheduleSlotViewset.as_view(), name="slot"),
     path('appointment/', AppointmentViewset.as_view(), name="appointment"),
 ]

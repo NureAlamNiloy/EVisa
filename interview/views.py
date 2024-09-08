@@ -1,25 +1,85 @@
 from rest_framework.response import Response
-from rest_framework import  status
+from rest_framework import status
 from rest_framework.views import APIView
 from .models import Appointment, AdminInterviewInfo, ScheduleSlot
 from .serializer import AppointmentSerializer, AdminInterviewInfoSerializer, ScheduleSlotSerializer
 from datetime import datetime, timedelta, time
 
-
-# Create your views here.
-
-
-def generate_interview_slots_for_year():
-    pass
-
 class AdminInterviewInfoViewset(APIView):
-    pass 
+    
+    def post(self, request):
+        # Get admin input
+        serializer = AdminInterviewInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            interview_info = serializer.save()
+
+            # Generate slots based on the admin input
+            self.generate_interview_slots(interview_info.start_date, interview_info.end_date, interview_info.total_interview)
+            return Response({"message": f"Interview slots created successfully from {interview_info.start_date} to {interview_info.end_date}"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def generate_interview_slots(self, start_date, end_date, total_interview):
+        current_date = start_date
+        while current_date <= end_date:
+            # Check if slots already exist for the current date
+            if ScheduleSlot.objects.filter(interview_date=current_date).exists():
+                # Skip this date if slots are already created
+                current_date += timedelta(days=1)
+                continue
+            
+            # Initialize the start time for the first slot of the day
+            slot_start_time = datetime.combine(current_date, datetime.min.time()) + timedelta(hours=9)  # Start at 9:00 AM
+
+            for _ in range(total_interview):
+                # Create a slot with the current start time
+                ScheduleSlot.objects.create(interview_date=current_date, start_time=slot_start_time.time())
+                
+                # Increment the start time by 30 minutes for the next slot
+                slot_start_time += timedelta(minutes=30)
+
+            # Move to the next day
+            current_date += timedelta(days=1)
+
 
 class ScheduleSlotViewset(APIView):
-    pass       
+    def get(self, request):
+        # Extract the 'date' parameter from the query string
+        interview_date = request.query_params.get('date')
+        
+        if not interview_date:
+            return Response({"error": "Missing 'date' parameter."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Fetch all slots for the specified interview date
+        slots = ScheduleSlot.objects.filter(interview_date=interview_date, is_booked=False)
+        
+        if slots.exists():
+            # Serialize the slots data (use your serializer if defined)
+            slot_data = [{"id": slot.id, "start_time": slot.start_time} for slot in slots]
+            return Response({"slots": slot_data}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "No available slots for the selected date."}, status=status.HTTP_404_NOT_FOUND)
+
 
 class AppointmentViewset(APIView):
-    pass 
+        def post(self, request):
+            # Allow user to book an appointment
+            serializer = AppointmentSerializer(data=request.data)
+            if serializer.is_valid():
+                schedule_slot = serializer.validated_data['schedule_slot']
+
+                # Check if slot is already booked
+                if schedule_slot.is_booked:
+                    return Response({"message": "This slot is already booked."}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Mark slot as booked
+                schedule_slot.is_booked = True
+                schedule_slot.save()
+
+                # Save appointment
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

@@ -5,7 +5,7 @@ from account.models import CustomUser
 # Create your models here.
 
 class AdminInterviewInfo(models.Model):
-    total_interview = models.IntegerField(default=10)
+    total_interview = models.IntegerField(default=20)
     start_date = models.DateField()
     end_date = models.DateField()
 
@@ -16,7 +16,7 @@ class ScheduleSlot(models.Model):
     interview_date = models.DateField() 
     start_time = models.TimeField(default="09:00")
     is_booked = models.BooleanField(default=False)
-
+ 
     def __str__(self):
         return f"{self.interview_date}={self.start_time}" 
 
