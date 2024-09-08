@@ -54,7 +54,7 @@ class ScheduleSlotViewset(APIView):
         
         if slots.exists():
             # Serialize the slots data (use your serializer if defined)
-            slot_data = [{"id": slot.id, "start_time": slot.start_time} for slot in slots]
+            slot_data = [{"id": slot.id, "start_time": slot.start_time, "is_booked": slot.is_booked} for slot in slots]
             return Response({"slots": slot_data}, status=status.HTTP_200_OK)
         else:
             return Response({"message": "No available slots for the selected date."}, status=status.HTTP_404_NOT_FOUND)
@@ -65,8 +65,15 @@ class AppointmentViewset(APIView):
             # Allow user to book an appointment
             serializer = AppointmentSerializer(data=request.data)
             if serializer.is_valid():
+                visa_application = serializer.validated_data['visa_application']
                 schedule_slot = serializer.validated_data['schedule_slot']
 
+                # Check if an appointment already exists for the visa application
+                if Appointment.objects.filter(visa_application=visa_application).exists():
+                    return Response(
+                        {"message": "An appointment already exists for this visa application."},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
                 # Check if slot is already booked
                 if schedule_slot.is_booked:
                     return Response({"message": "This slot is already booked."}, status=status.HTTP_400_BAD_REQUEST)

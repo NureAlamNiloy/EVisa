@@ -91,7 +91,7 @@ class VisaApplication(models.Model):
 VISASTATUS = [
     ('Pending', 'Pending'),
     ('Approved', 'Approved'),
-    ('schedule', 'schedule'),
+    ('Schedule', 'Schedule'),
     ('PoliceVerification', 'PoliceVerification'),
     ('AdminApprove', 'AdminApprove'),
 ]
