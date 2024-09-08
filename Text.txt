@@ -24,3 +24,91 @@
         "no_interview_date":"2024-8-30"
     }
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+    def get_travel_insurance_url(self, obj):
+        request = self.context.get('request')
+        if obj.travel_insurance and request:
+            return request.build_absolute_uri(obj.travel_insurance.url)
+        return None
+
+    def get_applicant_signature_url(self, obj):
+        request = self.context.get('request')
+        if obj.applicant_signature and request:
+            return request.build_absolute_uri(obj.applicant_signature.url)
+        return None
+
+    def get_passport_front_photo_url(self, obj):
+        request = self.context.get('request')
+        if obj.passport_front_photo and request:
+            return request.build_absolute_uri(obj.passport_front_photo.url)
+        return None
+    
+    def get_passport_back_photo_url(self, obj):
+        request = self.context.get('request')
+        if obj.passport_back_photo and request:
+            return request.build_absolute_uri(obj.passport_back_photo.url)
+        return None
+
+    def get_user_photo_url(self, obj):
+        request = self.context.get('request')
+        if obj.user_photo and request:
+            return request.build_absolute_uri(obj.user_photo.url)
+        return None
+
+    def get_health_insurance_url(self, obj):
+        request = self.context.get('request')
+        if obj.health_ensurence and request:
+            return request.build_absolute_uri(obj.health_ensurence.url)
+        return None
+ 
+
+
+
+ travel_insurance_url = serializers.SerializerMethodField()
+    applicant_signature_url = serializers.SerializerMethodField()
+    passport_front_photo_url = serializers.SerializerMethodField()
+    passport_back_photo_url = serializers.SerializerMethodField()
+    user_photo_url = serializers.SerializerMethodField()
+    health_insurance_url = serializers.SerializerMethodField()
