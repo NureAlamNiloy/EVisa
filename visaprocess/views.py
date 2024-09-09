@@ -22,7 +22,7 @@ class VisaApplicationViewset(viewsets.ModelViewSet):
     pagination_class = ListPagination
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['full_name', 'email', 'phone_number']
-    filterset_fields = ['visa_type', 'gender', 'is_approved', 'rejected', 'is_modified', 'submission_date']
+    filterset_fields = ['appointment__schedule_slot__interview_date', 'visa_type', 'gender', 'is_approved', 'rejected', 'is_modified', 'submission_date']
     
     def retrieve(self, request, *args, **kwargs):
         try:
