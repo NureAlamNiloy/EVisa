@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import AppointmentViewset, ScheduleSlotViewset, AdminInterviewInfoViewset, GetStartEndDate
-
+from .views import AllInterviewAPI, AppointmentViewset, ScheduleSlotViewset, AdminInterviewInfoViewset, GetStartEndDate
 
 
 urlpatterns = [
+    path('all_interview/', AllInterviewAPI.as_view(), name="all_interview"),
+    path('all_interview/<int:appointment_id>/', AllInterviewAPI.as_view(), name="all_interview_deleted"),
     path('get_date/', GetStartEndDate.as_view(), name="get_date"),
     path('interview_admin/', AdminInterviewInfoViewset.as_view(), name="no_interview_dates"),
     path('slot/', ScheduleSlotViewset.as_view(), name="slot"),

@@ -11,7 +11,7 @@ class AdminInterviewInfoSerializer(serializers.ModelSerializer):
 class ScheduleSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScheduleSlot
-        fields = '__all__'
+        fields =  '__all__'
 
 
 class AppointmentSerializer(serializers.ModelSerializer):

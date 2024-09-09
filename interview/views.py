@@ -1,10 +1,14 @@
 from rest_framework.response import Response
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from .models import Appointment, AdminInterviewInfo, ScheduleSlot
 from .serializer import AppointmentSerializer, AdminInterviewInfoSerializer, ScheduleSlotSerializer
 from datetime import datetime, timedelta
 from django.db.models import Count,Q,F
+from visaprocess.serializer import VisaApplicationSerializer
+from visaprocess.models import VisaApplication
+
 
 class GetStartEndDate(APIView):
     
@@ -113,3 +117,25 @@ class AppointmentViewset(APIView):
 
 
 
+
+
+
+
+
+
+
+class AllInterviewAPI(APIView):
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['appointment__schedule_slot__interview_date']  # Allows filtering by interview date
+
+    def get(self, request):
+        # Get all visa applications with booked appointments
+        booked_applications = VisaApplication.objects.filter(appointment__isnull=False).distinct()
+        
+        # Apply filters if needed
+        interview_date = request.query_params.get('interview_date', None)
+        if interview_date:
+            booked_applications = booked_applications.filter(appointment__schedule_slot__interview_date=interview_date)
+
+        serializer = VisaApplicationSerializer(booked_applications, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
