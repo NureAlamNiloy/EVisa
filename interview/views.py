@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from django.db.models import Count,Q,F
 from visaprocess.serializer import VisaApplicationSerializer
 from visaprocess.models import VisaApplication
+from django.shortcuts import get_object_or_404
 
 
 class GetStartEndDate(APIView):
@@ -122,14 +123,26 @@ class AllInterviewAPI(APIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['appointment__schedule_slot__interview_date']  # Allows filtering by interview date
 
-    def get(self, request):
-        # Get all visa applications with booked appointments
+    def get(self, request, pk=None):
+        if pk:
+            booked_application = get_object_or_404(VisaApplication, appointment__pk=pk)
+            serializer = VisaApplicationSerializer(booked_application, context={'request': request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
         booked_applications = VisaApplication.objects.filter(appointment__isnull=False).distinct()
         
-        # Apply filters if needed
         interview_date = request.query_params.get('interview_date', None)
         if interview_date:
             booked_applications = booked_applications.filter(appointment__schedule_slot__interview_date=interview_date)
 
         serializer = VisaApplicationSerializer(booked_applications, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        appointment = get_object_or_404(Appointment, pk=pk)
+        interview_date = request.data.get('interview_date')
+        if interview_date:
+            appointment.schedule_slot.interview_date = interview_date
+            appointment.schedule_slot.save()
+
+        return Response({"message": "Appointment updated successfully."}, status=status.HTTP_200_OK)

@@ -4,6 +4,7 @@ from .views import AllInterviewAPI, AppointmentViewset, ScheduleSlotViewset, Adm
 
 urlpatterns = [
     path('all_interview/', AllInterviewAPI.as_view(), name="all_interview"),
+    path('all_interview/<int:pk>/', AllInterviewAPI.as_view(), name="edit_interview"),
     path('get_date/', GetStartEndDate.as_view(), name="get_date"),
     path('interview_admin/', AdminInterviewInfoViewset.as_view(), name="no_interview_dates"),
     path('slot/', ScheduleSlotViewset.as_view(), name="slot"),
