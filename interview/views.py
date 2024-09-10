@@ -137,5 +137,5 @@ class AllInterviewAPI(APIView):
         if interview_date:
             booked_applications = booked_applications.filter(appointment__schedule_slot__interview_date=interview_date)
 
-        serializer = VisaApplicationSerializer(booked_applications, many=True)
+        serializer = VisaApplicationSerializer(booked_applications, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
