@@ -141,8 +141,14 @@ class AllInterviewAPI(APIView):
     def put(self, request, pk):
         appointment = get_object_or_404(Appointment, pk=pk)
         interview_date = request.data.get('interview_date')
+        start_time = request.data.get('start_time')
         if interview_date:
             appointment.schedule_slot.interview_date = interview_date
+            appointment.schedule_slot.start_time = start_time
+            appointment.schedule_slot.save()
+        
+        if  start_time:
+            appointment.schedule_slot.start_time = start_time
             appointment.schedule_slot.save()
 
         return Response({"message": "Appointment updated successfully."}, status=status.HTTP_200_OK)
