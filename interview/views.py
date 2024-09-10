@@ -38,9 +38,10 @@ class AdminInterviewInfoViewset(APIView):
         serializer = AdminInterviewInfoSerializer(data=request.data)
         if serializer.is_valid():
             interview_info = serializer.save()
+            total_interview = request.data.get('total_interview', interview_info.total_interview)
 
             # Generate slots based on the admin input
-            self.generate_interview_slots(interview_info.start_date, interview_info.end_date, interview_info.total_interview)
+            self.generate_interview_slots(interview_info.start_date, interview_info.end_date, total_interview)
             return Response({"message": f"Interview slots created successfully from {interview_info.start_date} to {interview_info.end_date}"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -113,13 +114,6 @@ class AppointmentViewset(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-
 
 
 
