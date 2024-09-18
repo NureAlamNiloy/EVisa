@@ -17,7 +17,7 @@ class ListPagination(pagination.PageNumberPagination):
  
 class VisaApplicationViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = VisaApplication.objects.all()
+    queryset = VisaApplication.objects.all().order_by("-id")
     serializer_class = VisaApplicationSerializer
     pagination_class = ListPagination
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]

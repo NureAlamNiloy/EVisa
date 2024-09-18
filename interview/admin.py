@@ -12,4 +12,5 @@ class AdminInterviewInfoAdmin(admin.ModelAdmin):
 
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(ScheduleSlot, ScheduleSlotAdmin)
+admin.site.register(AdminInterviewInfo)
 # admin.site.register(AdminInterviewInfo, AdminInterviewInfoAdmin)

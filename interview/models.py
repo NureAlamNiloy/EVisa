@@ -8,6 +8,8 @@ class AdminInterviewInfo(models.Model):
     total_interview = models.IntegerField(default=20)
     start_date = models.DateField()
     end_date = models.DateField()
+    start_time = models.TimeField(default="09:00")
+    end_time = models.TimeField(default="18:00")
 
     def __str__(self):
         return f"No Interview at {self.no_interview_date}"

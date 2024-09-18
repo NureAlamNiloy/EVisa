@@ -22,7 +22,9 @@
 {
     "start_date": "2024-09-05",
     "end_date": "2024-11-05",
-    "total_interview": optional
+    "start_time": "09:00",
+    "end_time": "15:00",
+    "total_interview": 20
 }
 
 

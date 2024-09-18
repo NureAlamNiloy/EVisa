@@ -74,7 +74,7 @@ class VisaApplication(models.Model):
     is_approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
     is_modified = models.BooleanField(default=False)
-    submission_date = models.DateField(auto_now_add=True)
+    submission_date = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if self.pk is None:

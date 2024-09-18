@@ -12,7 +12,6 @@ from django.shortcuts import get_object_or_404
 
 
 class GetStartEndDate(APIView):
-    
     def get(self, request):
         try:
             booked_dates = (
@@ -32,41 +31,49 @@ class GetStartEndDate(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
 class AdminInterviewInfoViewset(APIView):
     
     def post(self, request):
-        # Get admin input
         serializer = AdminInterviewInfoSerializer(data=request.data)
         if serializer.is_valid():
             interview_info = serializer.save()
             total_interview = request.data.get('total_interview', interview_info.total_interview)
 
             # Generate slots based on the admin input
-            self.generate_interview_slots(interview_info.start_date, interview_info.end_date, total_interview)
+            self.generate_interview_slots(interview_info.start_date, interview_info.end_date, interview_info.start_time, interview_info.end_time, total_interview)
             return Response({"message": f"Interview slots created successfully from {interview_info.start_date} to {interview_info.end_date}"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def generate_interview_slots(self, start_date, end_date, total_interview):
+    def generate_interview_slots(self, start_date, end_date, start_time, end_time, total_interview):
         current_date = start_date
         while current_date <= end_date:
             # Check if slots already exist for the current date
             if ScheduleSlot.objects.filter(interview_date=current_date).exists():
-                # Skip this date if slots are already created
                 current_date += timedelta(days=1)
                 continue
-            
-            # Initialize the start time for the first slot of the day
-            slot_start_time = datetime.combine(current_date, datetime.min.time()) + timedelta(hours=9)  # Start at 9:00 AM
 
+            # Calculate the total available time for interviews on this day
+            current_start_time = datetime.combine(current_date, start_time)
+            current_end_time = datetime.combine(current_date, end_time)
+
+            # Ensure the time window is valid
+            if current_start_time >= current_end_time:
+                raise ValueError("Start time must be earlier than end time")
+
+            # Calculate the dynamic slot duration based on the total number of interviews
+            total_available_time = current_end_time - current_start_time
+            slot_duration = total_available_time / total_interview  # Dynamic slot duration based on available time
+
+            # Generate slots with the calculated dynamic duration
             for _ in range(total_interview):
-                # Create a slot with the current start time
-                ScheduleSlot.objects.create(interview_date=current_date, start_time=slot_start_time.time())
-                
-                # Increment the start time by 30 minutes for the next slot
-                slot_start_time += timedelta(minutes=30)
+                ScheduleSlot.objects.create(interview_date=current_date, start_time=current_start_time.time())
+                current_start_time += slot_duration
 
             # Move to the next day
             current_date += timedelta(days=1)
+
+
 
 
 class ScheduleSlotViewset(APIView):

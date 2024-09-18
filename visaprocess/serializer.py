@@ -21,6 +21,7 @@ class VisaApplicationSerializer(serializers.ModelSerializer):
         model = VisaApplication
         fields = '__all__'
         read_only_fields = ['user']
+        
 
     def get_encoded_id(self, obj):
         encoded_id = base64.urlsafe_b64encode(str(obj.id).encode())
