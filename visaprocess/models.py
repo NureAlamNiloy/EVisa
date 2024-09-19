@@ -57,7 +57,7 @@ class VisaApplication(models.Model):
     city = models.CharField(max_length=40)
     state_province = models.CharField(max_length=50)
     postal_code = models.IntegerField()
-    purpose_of_visit  = models.TextField()
+    purpose_of_visit  = models.TextField(null=True, blank=True)
     planned_duration_of_stay = models.IntegerField()
     accommodation_details  = models.TextField()
     emergency_contact_name = models.CharField(max_length=100)

@@ -85,7 +85,7 @@ class UserAllApplication(views.APIView):
         if request.user.id != int(user_id):
             return Response({"message": "You do not have permission to view this user's data."}, status=status.HTTP_403_FORBIDDEN)
         
-        total_application = VisaApplication.objects.filter(user_id=user_id)
+        total_application = VisaApplication.objects.filter(user_id=user_id).order_by("-id")
         serializer = VisaApplicationSerializer(total_application, many=True, context={'request': request}) #Context add korar por photo url er agee domain show korteseee
         return Response(serializer.data, status=status.HTTP_200_OK)
 
