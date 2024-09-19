@@ -3,6 +3,7 @@ from .models import VisaApplication, VisaStatus
 from interview.serializer import AppointmentSerializer, ScheduleSlotSerializer
 from interview.models import Appointment, ScheduleSlot
 import base64
+from drf_extra_fields.fields import Base64ImageField
 
 class VisaStatusSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +11,12 @@ class VisaStatusSerializer(serializers.ModelSerializer):
         fields ='__all__'
 
 class VisaApplicationSerializer(serializers.ModelSerializer):
-    
+    user_photo = Base64ImageField()
+    travel_insurance = Base64ImageField()
+    applicant_signature = Base64ImageField()
+    passport_front_photo = Base64ImageField()
+    passport_back_photo = Base64ImageField()
+    health_ensurence = Base64ImageField()
     visa_statuses = VisaStatusSerializer(many=True, read_only=True)
     encoded_id = serializers.SerializerMethodField()
     # Appointment module ee visaApplication er relation ee related name appointment set kora ase tai ei filed diye serializer diye application er moddhe specific appointment dekhano jaitasee
