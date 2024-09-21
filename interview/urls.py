@@ -2,6 +2,7 @@ from django.urls import path
 from .views import AllInterviewAPI, AppointmentViewset, ScheduleSlotViewset, AdminInterviewInfoViewset, GetStartEndDate
 
 
+
 urlpatterns = [
     path('all_interview/', AllInterviewAPI.as_view(), name="all_interview"),
     path('all_interview/<int:pk>/', AllInterviewAPI.as_view(), name="edit_interview"),

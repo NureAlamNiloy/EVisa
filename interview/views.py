@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from .models import Appointment, AdminInterviewInfo, ScheduleSlot
@@ -121,10 +121,7 @@ class AppointmentViewset(APIView):
 
 
 
-
 class AllInterviewAPI(APIView):
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['appointment__schedule_slot__interview_date','appointment__interview_status'] 
 
     def get(self, request, pk=None):
         if pk:
@@ -137,6 +134,10 @@ class AllInterviewAPI(APIView):
         interview_date = request.query_params.get('interview_date', None)
         if interview_date:
             booked_applications = booked_applications.filter(appointment__schedule_slot__interview_date=interview_date)
+
+        interview_status = request.query_params.get('interview_status', None)
+        if interview_status:
+            booked_applications = booked_applications.filter(appointment__interview_status=interview_status)
 
         serializer = VisaApplicationSerializer(booked_applications, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)

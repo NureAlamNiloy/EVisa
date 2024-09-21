@@ -33,7 +33,7 @@ INTERVIEW_STATUSES = [
 class Appointment(models.Model):
     visa_application = models.ForeignKey(VisaApplication, related_name="appointment", on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    schedule_slot = models.OneToOneField(ScheduleSlot, on_delete=models.CASCADE)
+    schedule_slot = models.OneToOneField(ScheduleSlot, related_name="appointment", on_delete=models.CASCADE)
     booked_at = models.DateTimeField(auto_now_add=True)
     interview_status = models.CharField(max_length=100, default='Done', choices=INTERVIEW_STATUSES)
 
