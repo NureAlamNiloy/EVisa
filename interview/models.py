@@ -18,17 +18,24 @@ class ScheduleSlot(models.Model):
     interview_date = models.DateField() 
     start_time = models.TimeField(default="09:00")
     is_booked = models.BooleanField(default=False)
+    slot_duration = models.CharField(null=True, blank=True, max_length=300)
  
     def __str__(self):
         return f"{self.interview_date}={self.start_time}" 
 
 
+INTERVIEW_STATUSES = [
+    ("Done","Done"),
+    ("Reschedule","Reschedule"),
+    ("Cancel","Cancel"),
+]
 
 class Appointment(models.Model):
     visa_application = models.ForeignKey(VisaApplication, related_name="appointment", on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    schedule_slot = models.OneToOneField(ScheduleSlot, related_name="appointment", on_delete=models.CASCADE)
+    schedule_slot = models.OneToOneField(ScheduleSlot, on_delete=models.CASCADE)
     booked_at = models.DateTimeField(auto_now_add=True)
+    interview_status = models.CharField(max_length=100, default='Done', choices=INTERVIEW_STATUSES)
 
     class Meta:
         unique_together = ['visa_application', 'schedule_slot'] 
