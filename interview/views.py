@@ -147,17 +147,27 @@ class AllInterviewAPI(APIView):
         interview_date = request.data.get('interview_date')
         start_time = request.data.get('start_time')
         interview_status = request.data.get('interview_status')
+        current_slot = appointment.schedule_slot
 
-        if interview_date:
-            appointment.schedule_slot.interview_date = interview_date
-        
-        if  start_time:
-            appointment.schedule_slot.start_time = start_time
+        if interview_date or start_time:
+            new_slot = ScheduleSlot.objects.filter(interview_date=interview_date, start_time=start_time).first()
+            
+            if new_slot is None:
+                return Response({"message": "The requested slot is not available."}, status=status.HTTP_400_BAD_REQUEST)
+
+            if new_slot.is_booked and new_slot != current_slot:
+                return Response({"message": "This slot is already booked."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if current_slot and current_slot != new_slot:
+                current_slot.is_booked = False
+                current_slot.save()
+            appointment.schedule_slot = new_slot
+            new_slot.is_booked = True
+            new_slot.save()
 
         if interview_status:
             appointment.interview_status = interview_status
 
-        appointment.schedule_slot.save()
         appointment.save()
 
         return Response({"message": "Appointment updated successfully."}, status=status.HTTP_200_OK)
